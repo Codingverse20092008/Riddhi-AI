@@ -83,6 +83,11 @@ async def chat(message: ChatMessage):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# Root endpoint
+@app.get("/")
+def root():
+    return {"message": "Backend is live!"}
+
 # Health check endpoint
 @app.get("/health")
 def health_check():
