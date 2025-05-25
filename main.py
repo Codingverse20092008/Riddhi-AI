@@ -16,7 +16,11 @@ app = FastAPI(title="Riddhi AI Backend")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=[
+        "https://frontend-csubf7vp1-mehefuz-and-riddhi.vercel.app",
+        "https://frontend-f9gakx3kh-mehefuz-and-riddhi.vercel.app",
+        "https://frontend-1bf2gqqmt-mehefuz-and-riddhi.vercel.app"
+    ],  # Only allow requests from deployed Vercel frontends
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
