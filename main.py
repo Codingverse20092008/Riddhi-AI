@@ -17,6 +17,7 @@ app = FastAPI(title="Riddhi AI Backend")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://frontend-gib4j5oay-mehefuz-and-riddhi.vercel.app",
         "https://frontend-csubf7vp1-mehefuz-and-riddhi.vercel.app",
         "https://frontend-f9gakx3kh-mehefuz-and-riddhi.vercel.app",
         "https://frontend-1bf2gqqmt-mehefuz-and-riddhi.vercel.app"
