@@ -32,6 +32,20 @@ MONGODB_URL = os.getenv("MONGODB_URL")
 mongo_client = AsyncIOMotorClient(MONGODB_URL)
 db = mongo_client.riddhi_ai
 
+# Global exception handler to log all errors
+import logging
+from fastapi.responses import JSONResponse
+from fastapi.requests import Request
+from fastapi import status
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logging.error(f"Unhandled error: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": str(exc)},
+    )
+
 # OpenAI client
 openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -64,8 +78,15 @@ async def update_user_memory(memory: UserMemory):
     return {"status": "success"}
 
 # Chat endpoint
+
+@app.get("/test-error")
+async def test_error():
+    print("Test error endpoint hit!")
+    raise Exception("This is a test error!")
 @app.post("/chat")
 async def chat(message: ChatMessage):
+    print("/chat endpoint hit!")
+    print("Received message:", message)
     # Get user memory
     memory = await get_user_memory(message.user_id)
     
