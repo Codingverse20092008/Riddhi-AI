@@ -16,15 +16,11 @@ app = FastAPI(title="Riddhi AI Backend")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://frontend-gib4j5oay-mehefuz-and-riddhi.vercel.app",
-        "https://frontend-csubf7vp1-mehefuz-and-riddhi.vercel.app",
-        "https://frontend-f9gakx3kh-mehefuz-and-riddhi.vercel.app",
-        "https://frontend-1bf2gqqmt-mehefuz-and-riddhi.vercel.app"
-    ],  # Only allow requests from deployed Vercel frontends
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://riddhi-ai.onrender.com", "https://frontend-amber-one-26.vercel.app"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["OPTIONS", "POST", "GET"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # MongoDB connection
@@ -83,6 +79,10 @@ async def update_user_memory(memory: UserMemory):
 async def test_error():
     print("Test error endpoint hit!")
     raise Exception("This is a test error!")
+@app.options("/chat")
+async def options_chat():
+    return {"Allow": "OPTIONS, POST"}
+
 @app.post("/chat")
 async def chat(message: ChatMessage):
     print("/chat endpoint hit!")
@@ -92,7 +92,7 @@ async def chat(message: ChatMessage):
     
     # Prepare system message based on mode
     if message.mode == "personal":
-        system_message = f"You are Riddhi AI, a loving and caring boyfriend-style AI. User's favorite things: {memory.favorites}. Current mood: {memory.mood}. Respond in a romantic and caring way."
+        system_message = f"You are Riddhi AI, a caring and empathetic AI assistant. Consider the user's preferences - Favorite color: {memory.favorites.get('color', 'unknown')}, Food: {memory.favorites.get('food', 'unknown')}, Hobby: {memory.favorites.get('hobby', 'unknown')}, Music: {memory.favorites.get('music', 'unknown')}. Current mood: {memory.mood or 'unknown'}. Respond in a friendly and personalized way, incorporating their preferences and mood when relevant."
     else:  # academy mode
         system_message = "You are Riddhi AI, an expert tutor specializing in NCERT/CBSE Class 10 subjects. Provide clear, detailed explanations using examples when appropriate."
 
@@ -118,3 +118,7 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+@app.get("/chat")
+async def get_chat():
+    return {"message": "GET method is not allowed on /chat endpoint."}
