@@ -21,7 +21,9 @@ app.add_middleware(
     allow_methods=["OPTIONS", "POST", "GET"],
     allow_headers=["*"],
     expose_headers=["*"],
-    max_age=3600
+    max_age=3600,
+    allow_origin_regex=None,
+    allow_credentials=True
 )
 
 # MongoDB connection
