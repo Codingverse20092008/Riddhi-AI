@@ -16,7 +16,7 @@ app = FastAPI(title="Riddhi AI Backend")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://riddhi-ai.onrender.com", "https://frontend-amber-one-26.vercel.app"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://riddhi-ai.onrender.com", "https://frontend-7wll0ng5g-mehefuz-and-riddhi.vercel.app"],
     allow_credentials=True,
     allow_methods=["OPTIONS", "POST", "GET"],
     allow_headers=["*"],
